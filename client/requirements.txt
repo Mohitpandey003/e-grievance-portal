@@ -1,0 +1,19 @@
+# E-Grievance Portal - Frontend Dependencies
+# Node.js Version: 18.x or higher
+# Installation: npm install
+
+# Core Framework
+react@^18.2.0
+react-dom@^18.2.0
+
+# Routing
+react-router-dom@^6.18.0
+
+# HTTP Client
+axios@^1.5.1
+
+# Styling
+tailwindcss@^3.3.5
+
+# Build Tool
+react-scripts@5.0.1
