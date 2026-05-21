@@ -3,15 +3,13 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 
-// @desc    Register a new user
-// @route   POST /api/auth/register
-// @access  Public
+
 exports.register = async (req, res) => {
   try {
-    // Get data from request body
+    
     const { name, email, password, role, studentId, department, designation } = req.body;
 
-    // Validation: Check if all required fields are provided
+    
     if (!name || !email || !password || !role || !department) {
       return res.status(400).json({
         success: false,
@@ -116,12 +114,6 @@ exports.register = async (req, res) => {
   }
 };
 
-// @desc    Login user
-// @route   POST /api/auth/login
-// @access  Public
-// @desc    Login user
-// @route   POST /api/auth/login
-// @access  Public
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;

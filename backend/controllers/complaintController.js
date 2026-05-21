@@ -1,9 +1,6 @@
 const Complaint = require('../models/Complaint');
 const User = require('../models/User');
 
-// @desc    Submit a new complaint (Student only)
-// @route   POST /api/complaints
-// @access  Private (Student)
 exports.submitComplaint = async (req, res) => {
   try {
     const { title, description, category, priority } = req.body;
@@ -43,12 +40,6 @@ exports.submitComplaint = async (req, res) => {
   }
 };
 
-// @desc    Get all complaints (Different access for different roles)
-// @route   GET /api/complaints
-// @access  Private
-// @desc    Get all complaints (Different access for different roles)
-// @route   GET /api/complaints
-// @access  Private
 exports.getAllComplaints = async (req, res) => {
   try {
     let complaints;
@@ -61,10 +52,10 @@ exports.getAllComplaints = async (req, res) => {
         .populate('responses.respondedBy', 'name role')
         .sort({ createdAt: -1 }); // Latest first
     } else if (req.user.role === 'teacher') {
-      // Teachers can see complaints in their department or assigned to them
+      
       complaints = await Complaint.find({
         $or: [
-          { assignedTo: req.user.id }, // Assigned to this teacher
+          { assignedTo: req.user.id },
         ],
       })
         .populate('assignedTo', 'name email designation department')
@@ -84,11 +75,11 @@ exports.getAllComplaints = async (req, res) => {
         .populate('responses.respondedBy', 'name role')
         .sort({ createdAt: -1 });
 
-      // Make students anonymous for admin too
+      
       complaints = complaints.map((complaint) => {
         const complaintObj = complaint.toObject();
         complaintObj.submittedBy = {
-          _id: complaint.submittedBy, // Keep ID for tracking purposes
+          _id: complaint.submittedBy, 
           name: 'Anonymous Student',
           email: 'anonymous@student.com',
           studentId: 'ANONYMOUS',
@@ -113,9 +104,7 @@ exports.getAllComplaints = async (req, res) => {
   }
 };
 
-// @desc    Get single complaint by ID
-// @route   GET /api/complaints/:id
-// @access  Private
+
 exports.getComplaintById = async (req, res) => {
   try {
     let complaint = await Complaint.findById(req.params.id)
@@ -160,9 +149,6 @@ exports.getComplaintById = async (req, res) => {
   }
 };
 
-// @desc    Update complaint status (Admin only)
-// @route   PUT /api/complaints/:id/status
-// @access  Private (Admin)
 exports.updateComplaintStatus = async (req, res) => {
   try {
     const { status } = req.body;
@@ -205,9 +191,6 @@ exports.updateComplaintStatus = async (req, res) => {
   }
 };
 
-// @desc    Assign complaint to teacher (Admin only)
-// @route   PUT /api/complaints/:id/assign
-// @access  Private (Admin)
 exports.assignComplaint = async (req, res) => {
   try {
     const { teacherId } = req.body;
@@ -251,9 +234,6 @@ exports.assignComplaint = async (req, res) => {
   }
 };
 
-// @desc    Add response to complaint (Teacher/Admin)
-// @route   POST /api/complaints/:id/response
-// @access  Private (Teacher/Admin)
 exports.addResponse = async (req, res) => {
   try {
     const { message } = req.body;
@@ -310,9 +290,6 @@ exports.addResponse = async (req, res) => {
   }
 };
 
-// @desc    Get complaints by tracking ID (Public - for students to track)
-// @route   GET /api/complaints/track/:trackingId
-// @access  Public
 exports.trackComplaint = async (req, res) => {
   try {
     const complaint = await Complaint.findOne({
@@ -346,9 +323,6 @@ exports.trackComplaint = async (req, res) => {
   }
 };
 
-// @desc    Get analytics/stats (Admin/Teacher)
-// @route   GET /api/complaints/stats
-// @access  Private (Admin/Teacher)
 exports.getComplaintStats = async (req, res) => {
   try {
     // Total complaints
