@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Base URL of your backend
-const API_URL = 'https://e-grievance-portal-1.onrender.com/api';
+const API_URL = import.meta.env.VITE_API_URL;
 
 // Create axios instance with default config
 const api = axios.create({
